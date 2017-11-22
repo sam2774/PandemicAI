@@ -58,6 +58,7 @@ nx.add_star(pandemic, ["Sydney", "Jakarta", "Manila", "Los Angeles"])
 nx.add_star(pandemic, ["Tokyo", "Seoul", "Shanghai", "Osaka", "San Fransisco"])
 nx.add_star(pandemic, ["Osaka", "Taipei", "Tokyo"])
 
+#Freezes the board, so no more nodes or edges can be added to the graph
 nx.freeze(pandemic)
 
 def infect(city, alreadyInfected=set()):
@@ -68,6 +69,3 @@ def infect(city, alreadyInfected=set()):
             infect(n)
     else:
         pandemic.node[city]['cubes'] += 1
-
-for x in range(0, 7):
-    infect("Baghdad")
