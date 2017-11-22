@@ -61,11 +61,18 @@ nx.add_star(pandemic, ["Osaka", "Taipei", "Tokyo"])
 #Freezes the board, so no more nodes or edges can be added to the graph
 nx.freeze(pandemic)
 
+outbreakCounter = 0
+
 def infect(city, alreadyInfected=set()):
     if(pandemic.node[city]['cubes'] >= 3):
-        alreadyInfected.add(city)
-        neighbors = set(pandemic.neighbors(city)) - alreadyInfected
-        for n in neighbors:
-            infect(n)
+        global outbreakCounter
+        outbreakCounter += 1
+        if outbreakCounter >= 8:
+            print("GAME OVER!")
+        else:
+            alreadyInfected.add(city)
+            neighbors = set(pandemic.neighbors(city)) - alreadyInfected
+            for n in neighbors:
+                infect(n)
     else:
         pandemic.node[city]['cubes'] += 1
