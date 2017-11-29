@@ -3,13 +3,13 @@ import networkx as nx
 class Pandemic():
     def __init__(self):
         self.pandemic = nx.Graph()
-        self.pandemic.add_nodes_from(["San Fransisco", "Chicago", "Montreal", "New York", "Atlanta", "Washington", "London", "Madrid", "Essen", "Paris", "Milan", "St. Petersburg"], color="blue", cubes=0)
+        self.pandemic.add_nodes_from(["San Francisco", "Chicago", "Montreal", "New York", "Atlanta", "Washington", "London", "Madrid", "Essen", "Paris", "Milan", "St. Petersburg"], color="blue", cubes=0)
         self.pandemic.add_nodes_from(["Los Angeles", "Mexico City", "Miami", "Bogota", "Lima", "Santiago", "Buenos Aires", "Sao Paulo", "Lagos", "Kinshasa", "Johannesburg", "Khartoum"], color="yellow", cubes=0)
         self.pandemic.add_nodes_from(["Algiers", "Istanbul", "Cairo", "Moscow", "Baghdad", "Riyadh", "Tehran", "Karachi", "Mumbai", "Delhi", "Chennai", "Kolkata"], color="black", cubes=0)
         self.pandemic.add_nodes_from(["Bangkok", "Jakarta", "Beijing", "Shanghai", "Hong Kong", "Ho Chi Minh City", "Seoul", "Taipei", "Manila", "Sydney", "Tokyo", "Osaka"], color="red", cubes=0)
 
-        nx.add_star(self.pandemic, ["San Fransisco", "Tokyo", "Manila", "Los Angeles", "Chicago"])
-        nx.add_star(self.pandemic, ["Chicago", "San Fransisco", "Los Angeles", "Mexico City", "Atlanta", "Montreal"])
+        nx.add_star(self.pandemic, ["San Francisco", "Tokyo", "Manila", "Los Angeles", "Chicago"])
+        nx.add_star(self.pandemic, ["Chicago", "San Francisco", "Los Angeles", "Mexico City", "Atlanta", "Montreal"])
         nx.add_star(self.pandemic, ["Montreal", "Chicago", "Washington", "New York"])
         nx.add_star(self.pandemic, ["New York", "Montreal", "Washington", "London", "Madrid"])
         nx.add_star(self.pandemic, ["Atlanta", "Chicago", "Washington", "Miami"])
@@ -21,7 +21,7 @@ class Pandemic():
         nx.add_star(self.pandemic, ["Milan", "Essen", "Paris", "Istanbul"])
         nx.add_star(self.pandemic, ["St. Petersburg", "Essen", "Istanbul", "Moscow"])
 
-        nx.add_star(self.pandemic, ["Los Angeles", "Sydney", "San Fransisco", "Chicago", "Mexico City"])
+        nx.add_star(self.pandemic, ["Los Angeles", "Sydney", "San Francisco", "Chicago", "Mexico City"])
         nx.add_star(self.pandemic, ["Mexico City", "Los Angeles", "Chicago", "Miami", "Bogota", "Lima"])
         nx.add_star(self.pandemic, ["Miami", "Atlanta", "Washington", "Bogota", "Mexico City"])
         nx.add_star(self.pandemic, ["Bogota", "Mexico City", "Miami", "Sao Paulo", "Buenos Aires", "Lima"])
@@ -55,9 +55,9 @@ class Pandemic():
         nx.add_star(self.pandemic, ["Ho Chi Minh City", "Bangkok", "Hong Kong", "Manila", "Jakarta"])
         nx.add_star(self.pandemic, ["Seoul", "Beijing", "Shanghai", "Tokyo"])
         nx.add_star(self.pandemic, ["Taipei", "Bangkok", "Hong Kong", "Manila", "Osaka"])
-        nx.add_star(self.pandemic, ["Manila", "Taipei", "Hong Kong", "Ho Chi Minh City", "Sydney", "San Fransisco"])
+        nx.add_star(self.pandemic, ["Manila", "Taipei", "Hong Kong", "Ho Chi Minh City", "Sydney", "San Francisco"])
         nx.add_star(self.pandemic, ["Sydney", "Jakarta", "Manila", "Los Angeles"])
-        nx.add_star(self.pandemic, ["Tokyo", "Seoul", "Shanghai", "Osaka", "San Fransisco"])
+        nx.add_star(self.pandemic, ["Tokyo", "Seoul", "Shanghai", "Osaka", "San Francisco"])
         nx.add_star(self.pandemic, ["Osaka", "Taipei", "Tokyo"])
 
         #Freezes the board, so no more nodes or edges can be added to the graph

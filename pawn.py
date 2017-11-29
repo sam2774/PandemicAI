@@ -8,10 +8,15 @@ class pawn(object):
         self.currentCity = newCity
     
     def getCity(self):
-        return str(currentCity)
+        return str(self.currentCity)
     
     def addCard(self, card):
         self.hand.append(card)
+
+    def removeCard(self,removeCard):
+        for i in range (len(self.hand)):
+            if self.hand[i] == removeCard:
+                self.hand.__delitem__(i)
     
     def getHand(self):
         for card in self.hand:
