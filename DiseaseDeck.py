@@ -6,7 +6,7 @@ class DiseaseDeck():
         unshuffled = ["San Fransisco", "Chicago", "Montreal", "New York", "Atlanta", "Washington", "London", "Madrid", "Paris", "Essen", 
                       "Milan", "St. Petersburg", "Los Angeles", "Mexico City", "Miami", "Bogota", "Lima", "Santiago", "Buenos Aires", "Sao Paulo",
                       "Lagos", "Kinshasa", "Johannesburg", "Khartoum", "Algiers", "Istanbul", "Cairo", "Moscow", "Baghdad", "Riyadh", 
-                      "Tehran", "Karaci", "Mumbai", "Delhi", "Chennai", "Kolkata", "Bangkok", "Jakarta", "Beijing", "Shanghai", 
+                      "Tehran", "Karachi", "Mumbai", "Delhi", "Chennai", "Kolkata", "Bangkok", "Jakarta", "Beijing", "Shanghai", 
                       "Hong Kong", "Ho Chi Minh City", "Seoul", "Taipei", "Manila", "Sydney", "Tokyo", "Osaka"]
         shuffled = []
         while (unshuffled.__len__() > 0):
