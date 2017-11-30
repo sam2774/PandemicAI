@@ -22,9 +22,7 @@ class Game():
         for count in range(3, 0, -1):
             for i in range(3):
                 card = self.diseaseDeck.draw()
-                print(card)
                 self.board.pandemic.node[card]['cubes'] = count
-                print(self.board.pandemic.node[card])
 
         for i in range(2):
             self.pawn1.addCard(self.cureDeck.draw())
@@ -32,22 +30,23 @@ class Game():
             self.pawn3.addCard(self.cureDeck.draw())
             self.pawn4.addCard(self.cureDeck.draw())
         self.cureDeck.insertEpidemics()
+        print(self.cureDeck.deck)
+        
                 
     def cure(self, city):
         if self.board.pandemic.node[city]['cubes'] > 0:
             self.board.pandemic.node[city]['cubes'] -=1
-        print (self.board.pandemic.node[city]['cubes'])
 
     def runTurn(self, actions, pawn):
         for action in actions:
             print(action)
-            if action[0] == "move":
-                pawn.move(action[1])
-            elif action[0] == "cure":
-                self.cure(action[1])
+            if action[1] == "move":
+                pawn.move(action[2])
+            elif action[1] == "cure":
+                self.cure(action[2])
             else:
-                 pawn.move(action[1])
-                 pawn.removeCard(action[1])
+                 pawn.move(action[2])
+                 pawn.removeCard(action[2])
                  
             print (pawn.currentCity)               
             #takeAction(action[i])
@@ -65,9 +64,12 @@ class Game():
         for i in range(self.epidemicTrack[self.epidemicCounter]):
             card = self.diseaseDeck.draw()
             self.board.infect(card)
+
+        self.currentPawnIndex += 1
+        if(self.currentPawnIndex == 4):
+            self.currentPawnIndex = 0
         
-        
-game = Game()
+    
 
 #game.runTurn([("move","San Francisco"), ("cure", "San Francisco"), ("move", "Mexico City"), ("playcard", "Hong Kong")], game.pawn1)
 
