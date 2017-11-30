@@ -63,18 +63,17 @@ class Pandemic():
         #Freezes the board, so no more nodes or edges can be added to the graph
         nx.freeze(self.pandemic)
 
-        outbreakCounter = 0
+        self.outbreakCounter = 0
 
     def infect(self,city, alreadyInfected=set()):
         if(self.pandemic.node[city]['cubes'] >= 3):
-            global outbreakCounter
-            outbreakCounter += 1
-            if outbreakCounter >= 8:
+            self.outbreakCounter += 1
+            if self.outbreakCounter >= 8:
                 print("GAME OVER!")
             else:
                 alreadyInfected.add(city)
                 neighbors = set(self.pandemic.neighbors(city)) - alreadyInfected
                 for n in neighbors:
-                    infect(n)
+                    self.infect(n)
         else:
             self.pandemic.node[city]['cubes'] += 1

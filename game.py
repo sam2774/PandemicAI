@@ -1,6 +1,7 @@
 from pawn import pawn
 from DiseaseDeck import DiseaseDeck
 from pandemic import Pandemic
+from CureDeck import CureDeck
 
 
 class Game():
@@ -13,31 +14,29 @@ class Game():
         self.diseaseDeck = DiseaseDeck()
         self.currentPawnIndex = 0
         self.board = Pandemic()
+        self.cureDeck = CureDeck()
 
-        self.epidemicCounter = 2
+        self.epidemicTrack = [2, 2, 2, 3, 3, 4]
+        self.epidemicCounter = 0
 
-        #cureDeck goes here
-    def initialInfect(self):
         for count in range(3, 0, -1):
             for i in range(3):
                 card = self.diseaseDeck.draw()
                 print(card)
                 self.board.pandemic.node[card]['cubes'] = count
                 print(self.board.pandemic.node[card])
+
+        for i in range(2):
+            self.pawn1.addCard(self.cureDeck.draw())
+            self.pawn2.addCard(self.cureDeck.draw())
+            self.pawn3.addCard(self.cureDeck.draw())
+            self.pawn4.addCard(self.cureDeck.draw())
+        self.cureDeck.insertEpidemics()
                 
     def cure(self, city):
         if self.board.pandemic.node[city]['cubes'] > 0:
             self.board.pandemic.node[city]['cubes'] -=1
         print (self.board.pandemic.node[city]['cubes'])
-
-    
-    def initialHands(self):
-        for i in range(2):
-            #Draw new card each time
-            self.pawn1.addCard("Rando Card")
-            self.pawn2.addCard("Rando Card")
-            self.pawn3.addCard("Rando Card")
-            self.pawn4.addCard("Rando Card")
 
     def runTurn(self, actions, pawn):
         for action in actions:
@@ -50,24 +49,25 @@ class Game():
                  pawn.move(action[1])
                  pawn.removeCard(action[1])
                  
-            print (pawn.getCity())               
+            print (pawn.currentCity)               
             #takeAction(action[i])
+        
+        for i in range(2):
+            card = self.cureDeck.draw()
+            if card == "Epidemic":
+                self.epidemicCounter += 1
+                card = self.diseaseDeck.drawFromBottom()
+                self.board.pandemic.node[card]['cubes'] = 3
+                self.diseaseDeck.appendGraveyard()
+            else:
+                pawn.addCard(card)
 
-        #draw 2 from cure deck
-        #if(draw == epidemic):
-            #doEpedimic()
-
-        for i in range(self.epidemicCounter):
+        for i in range(self.epidemicTrack[self.epidemicCounter]):
             card = self.diseaseDeck.draw()
             self.board.infect(card)
-          #set pawn index  
         
         
 game = Game()
-game.initialInfect()
-game.initialHands()
 
-game.runTurn([("move","San Francisco"), ("cure", "San Francisco"), ("move", "Mexico City"), ("playcard", "Hong Kong")], game.pawn1)
-
-game.cure("London")
+#game.runTurn([("move","San Francisco"), ("cure", "San Francisco"), ("move", "Mexico City"), ("playcard", "Hong Kong")], game.pawn1)
 

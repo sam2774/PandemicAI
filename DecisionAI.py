@@ -4,33 +4,48 @@ import copy
 class AI():
     def __init__(self):
         self.variable = "yes"
-    def chooseTurn(self,game):
-        actionTuple = []
-        pawn = game.pawnList[game.currentPawnIndex]
-        neighbors = game.board.pandemic.neighbors(pawn.currentCity)
-        firstActions = []
+
+    def analyzeNeighbors(self, game):
+        actionList = []
+        originalPawn = game.pawnList[game.currentPawnIndex]
+        neighbors = game.board.pandemic.neighbors(originalPawn.currentCity)
         for neighbor in neighbors:
             newGame = copy.deepcopy(game)
             pawn = newGame.pawnList[newGame.currentPawnIndex]
             pawn.move(neighbor)
-            firstActions.append((newGame, "move", neighbor))
+            actionList.append((newGame, (originalPawn.currentCity, "move", neighbor)))
+        return actionList
+
+    def analyzeCards(self, game):
+        actionList = []
+        originalPawn = game.pawnList[game.currentPawnIndex]
+        print(originalPawn.hand)
+        for card in originalPawn.hand:
+            newGame = copy.deepcopy(game)
+            pawn = newGame.pawnList[newGame.currentPawnIndex]
+            pawn.useCard(card)
+            actionList.append((newGame, (originalPawn.currentCity, "playCard", card)))
+        return actionList
+    
+    def chooseTurn(self,game):
+        actionTuple = []
+        
+        firstActions = self.analyzeNeighbors(game)
+        firstActions += self.analyzeCards(game)
             #AI part goes here
         #rest of actions
         secondActions = []
         for action in firstActions:
-            pawn = action[0].pawnList[action[0].currentPawnIndex]
-            neighbors = action[0].board.pandemic.neighbors(pawn.currentCity)
-            for neighbor in neighbors:
-                newGame = copy.deepcopy(action[0])
-                pawn = newGame.pawnList[newGame.currentPawnIndex]
-                pawn.move(neighbor)
-                secondActions.append((newGame, "move", neighbor))
+            secondActions += self.analyzeNeighbors(action[0])
+            secondActions += self.analyzeCards(action[0])
+
+        print(firstActions)
+        print("\n")
+        print(secondActions)
             
         #secondActions = prune(secondActions)        
         return actionTuple
 
 ai = AI()       
 game = Game()
-game.initialInfect()
-game.initialHands()
 actions = ai.chooseTurn(game)
