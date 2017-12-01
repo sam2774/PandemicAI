@@ -30,17 +30,20 @@ class AI():
                         cubeSumList[region] += 0.5
                         cubeSumList[region] += 0.5 * probability
                 else:
-                    if game.board.pandemic.node[city]['cubes'] == 2:
-                        cubeSumList[region] += 5
-                        cubeSumList[region] += 5 * probability
-                    elif game.board.pandemic.node[city]['cubes'] == 3:
+                    if game.board.pandemic.node[city]['cubes'] == 3:
                         cubeSumList[region] += 10
                         cubeSumList[region] += 10 * probability
+                    elif game.board.pandemic.node[city]['cubes'] == 2:
+                        cubeSumList[region] += 5
+                        cubeSumList[region] += 5 * probability
                     else:
                         cubeSumList[region] += game.board.pandemic.node[city]['cubes']
                         cubeSumList[region] += game.board.pandemic.node[city]['cubes'] * probability
 
         heuristic = sum(cubeSumList)
+
+        for pawn in game.pawnList:
+            heuristic -= 5 * len(pawn.hand)
 
         return heuristic
 
@@ -174,8 +177,9 @@ ai = AI()
 game = Game()
 
 turn = 1
-while True:
+while game.thingsCured != [True, True, True, True]:
     print("Turn: " + str(turn))
     actions = ai.chooseTurn(game)
     game.runTurn(actions, game.pawnList[game.currentPawnIndex])
     turn += 1
+print("We did it!")

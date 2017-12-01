@@ -15,6 +15,8 @@ class Game():
         self.currentPawnIndex = 0
         self.board = Pandemic()
         self.cureDeck = CureDeck()
+        self.colorList = ["red", "blue", "yellow", "black"]
+        self.thingsCured = [False, False, False, False]
 
         self.oldGraveyards = []
 
@@ -47,6 +49,46 @@ class Game():
         if self.board.pandemic.node[city]['cubes'] > 0:
             self.board.pandemic.node[city]['cubes'] -=1
 
+    def canCure(self, pawn):
+        redCards = []
+        blueCards = []
+        yellowCards = []
+        blackCards =[]
+        
+        for card in pawn.hand:
+            if not self.thingsCured[0]:
+                for city in self.board.redCities:
+                    if card == city:
+                        redCards += [card]
+                if len(redCards) >= 3:
+                    pawn.hand = [card for card in pawn.hand if card not in redCards]
+                    self.thingsCured[0] = True
+                    print("Cured Red!")
+            if not self.thingsCured[1]:
+                for city in self.board.blueCities:
+                    if card == city:
+                        blueCards += [card]
+                if len(blueCards) >= 3:
+                    pawn.hand = [card for card in pawn.hand if card not in blueCards]
+                    self.thingsCured[1] = True
+                    print("Cured Blue!")
+            if not self.thingsCured[2]:
+                for city in self.board.yellowCities:
+                    if card == city:
+                        yellowCards += [card]
+                if len(yellowCards) >= 3:
+                    pawn.hand = [card for card in pawn.hand if card not in yellowCards]
+                    self.thingsCured[2] = True
+                    print("Cured Yellow!")
+            if not self.thingsCured[3]:
+                for city in self.board.blackCities:
+                    if card == city:
+                        blackCards += [card]
+                if len(blackCards) >= 3:
+                    pawn.hand = [card for card in pawn.hand if card not in blackCards]
+                    self.thingsCured[3] = True
+                    print("Cured Black!")
+
     def runTurn(self, actions, pawn):
         currentPawn = self.pawnList[self.currentPawnIndex]
         print("Current pawn: " + currentPawn.name + ": " + currentPawn.currentCity)
@@ -61,6 +103,7 @@ class Game():
             else:
                  pawn.move(action[2])
                  pawn.removeCard(action[2])
+        self.canCure(currentPawn)
         print("")
         
         for i in range(2):
@@ -79,18 +122,27 @@ class Game():
 
         for i in range(self.epidemicTrack[self.epidemicCounter]):
             card = self.diseaseDeck.draw()
-            self.board.infect(card)
+            for city in self.board.redCities:
+                if card == city and not self.thingsCured[0]:
+                    self.board.infect(card)
+            for city in self.board.blueCities:
+                if card == city and not self.thingsCured[1]:
+                    self.board.infect(card)
+            for city in self.board.yellowCities:
+                if card == city and not self.thingsCured[2]:
+                    self.board.infect(card)
+            for city in self.board.blackCities:
+                if card == city and not self.thingsCured[3]:
+                    self.board.infect(card)
+            
 
         self.currentPawnIndex += 1
         if(self.currentPawnIndex == 4):
             self.currentPawnIndex = 0
 
         
-
+        print(self.thingsCured)
         self.board.printInfected()
         self.printPawnLocations()
         
-    
-
-#game.runTurn([("move","San Francisco"), ("cure", "San Francisco"), ("move", "Mexico City"), ("playcard", "Hong Kong")], game.pawn1)
 
