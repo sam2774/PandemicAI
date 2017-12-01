@@ -3,10 +3,15 @@ import networkx as nx
 class Pandemic():
     def __init__(self):
         self.pandemic = nx.Graph()
-        self.pandemic.add_nodes_from(["San Francisco", "Chicago", "Montreal", "New York", "Atlanta", "Washington", "London", "Madrid", "Essen", "Paris", "Milan", "St. Petersburg"], color="blue", cubes=0)
-        self.pandemic.add_nodes_from(["Los Angeles", "Mexico City", "Miami", "Bogota", "Lima", "Santiago", "Buenos Aires", "Sao Paulo", "Lagos", "Kinshasa", "Johannesburg", "Khartoum"], color="yellow", cubes=0)
-        self.pandemic.add_nodes_from(["Algiers", "Istanbul", "Cairo", "Moscow", "Baghdad", "Riyadh", "Tehran", "Karachi", "Mumbai", "Delhi", "Chennai", "Kolkata"], color="black", cubes=0)
-        self.pandemic.add_nodes_from(["Bangkok", "Jakarta", "Beijing", "Shanghai", "Hong Kong", "Ho Chi Minh City", "Seoul", "Taipei", "Manila", "Sydney", "Tokyo", "Osaka"], color="red", cubes=0)
+        self.blueCities = ["San Francisco", "Chicago", "Montreal", "New York", "Atlanta", "Washington", "London", "Madrid", "Essen", "Paris", "Milan", "St. Petersburg"]
+        self.yellowCities = ["Los Angeles", "Mexico City", "Miami", "Bogota", "Lima", "Santiago", "Buenos Aires", "Sao Paulo", "Lagos", "Kinshasa", "Johannesburg", "Khartoum"]
+        self.blackCities = ["Algiers", "Istanbul", "Cairo", "Moscow", "Baghdad", "Riyadh", "Tehran", "Karachi", "Mumbai", "Delhi", "Chennai", "Kolkata"]
+        self.redCities = ["Bangkok", "Jakarta", "Beijing", "Shanghai", "Hong Kong", "Ho Chi Minh City", "Seoul", "Taipei", "Manila", "Sydney", "Tokyo", "Osaka"]
+        
+        self.pandemic.add_nodes_from(self.blueCities, color="blue", cubes=0)
+        self.pandemic.add_nodes_from(self.yellowCities, color="yellow", cubes=0)
+        self.pandemic.add_nodes_from(self.blackCities, color="black", cubes=0)
+        self.pandemic.add_nodes_from(self.redCities, color="red", cubes=0)
 
         nx.add_star(self.pandemic, ["San Francisco", "Tokyo", "Manila", "Los Angeles", "Chicago"])
         nx.add_star(self.pandemic, ["Chicago", "San Francisco", "Los Angeles", "Mexico City", "Atlanta", "Montreal"])
@@ -68,8 +73,10 @@ class Pandemic():
     def infect(self,city, alreadyInfected=set()):
         if(self.pandemic.node[city]['cubes'] >= 3):
             self.outbreakCounter += 1
+            print("Outbreak: " + str(self.outbreakCounter))
             if self.outbreakCounter >= 8:
                 print("GAME OVER!")
+                sys.exit()
             else:
                 alreadyInfected.add(city)
                 neighbors = set(self.pandemic.neighbors(city)) - alreadyInfected
@@ -77,3 +84,11 @@ class Pandemic():
                     self.infect(n)
         else:
             self.pandemic.node[city]['cubes'] += 1
+
+    def printInfected(self):
+        print("Boardstate:")
+        for city in self.pandemic.nodes:
+            cubes = self.pandemic.node[city]['cubes']
+            if(cubes > 0):
+                print(city + ": " + str(cubes))
+        print ("")

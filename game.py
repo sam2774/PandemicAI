@@ -16,6 +16,8 @@ class Game():
         self.board = Pandemic()
         self.cureDeck = CureDeck()
 
+        self.oldGraveyards = []
+
         self.epidemicTrack = [2, 2, 2, 3, 3, 4]
         self.epidemicCounter = 0
 
@@ -30,7 +32,15 @@ class Game():
             self.pawn3.addCard(self.cureDeck.draw())
             self.pawn4.addCard(self.cureDeck.draw())
         self.cureDeck.insertEpidemics()
-        print(self.cureDeck.deck)
+        self.board.printInfected()
+        self.printPawnLocations()
+
+    def printPawnLocations(self):
+        locStr = ""
+        for pawn in self.pawnList:
+            locStr += pawn.name + ": " + pawn.currentCity + ", "
+        print(locStr)
+        print()
         
                 
     def cure(self, city):
@@ -38,6 +48,10 @@ class Game():
             self.board.pandemic.node[city]['cubes'] -=1
 
     def runTurn(self, actions, pawn):
+        currentPawn = self.pawnList[self.currentPawnIndex]
+        print("Current pawn: " + currentPawn.name + ": " + currentPawn.currentCity)
+        print("Cards: " + str(currentPawn.hand))
+        print("Actions Taken: ")
         for action in actions:
             print(action)
             if action[1] == "move":
@@ -47,16 +61,18 @@ class Game():
             else:
                  pawn.move(action[2])
                  pawn.removeCard(action[2])
-                 
-            print (pawn.currentCity)               
-            #takeAction(action[i])
+        print("")
         
         for i in range(2):
             card = self.cureDeck.draw()
             if card == "Epidemic":
+                print("Epidemic Drawn!")
                 self.epidemicCounter += 1
+                
                 card = self.diseaseDeck.drawFromBottom()
                 self.board.pandemic.node[card]['cubes'] = 3
+                self.oldGraveyards += set(self.diseaseDeck.graveyard)
+                
                 self.diseaseDeck.appendGraveyard()
             else:
                 pawn.addCard(card)
@@ -68,6 +84,11 @@ class Game():
         self.currentPawnIndex += 1
         if(self.currentPawnIndex == 4):
             self.currentPawnIndex = 0
+
+        
+
+        self.board.printInfected()
+        self.printPawnLocations()
         
     
 
