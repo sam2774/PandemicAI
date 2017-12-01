@@ -19,24 +19,26 @@ class AI():
             for city in citiesList[region]:
                 probability = self.prob(game, city)
                 pawnCity = self.isPawnCity(game, city)
-                if game.board.pandemic.node[city]['cubes'] == 2 and pawnCity:
-                    cubeSumList[region] += 2
-                    cubeSumList[region] += 2 * probability
-                elif game.board.pandemic.node[city]['cubes'] == 3 and pawnCity:
-                    cubeSumList[region] += 3
-                    cubeSumList[region] += 3 * probability
-                elif game.board.pandemic.node[city]['cubes'] == 1 and pawnCity:
-                    cubeSumList[region] += 0.5
-                    cubeSumList[region] += 0.5 * probability
-                elif game.board.pandemic.node[city]['cubes'] == 2:
-                    cubeSumList[region] += 5
-                    cubeSumList[region] += 5 * probability
-                elif game.board.pandemic.node[city]['cubes'] == 3:
-                    cubeSumList[region] += 10
-                    cubeSumList[region] += 10 * probability
+                if pawnCity:
+                    if game.board.pandemic.node[city]['cubes'] == 3:
+                        cubeSumList[region] += 3
+                        cubeSumList[region] += 3 * probability
+                    elif game.board.pandemic.node[city]['cubes'] == 2:
+                        cubeSumList[region] += 2
+                        cubeSumList[region] += 2 * probability
+                    else:
+                        cubeSumList[region] += 0.5
+                        cubeSumList[region] += 0.5 * probability
                 else:
-                    cubeSumList[region] += game.board.pandemic.node[city]['cubes']
-                    cubeSumList[region] += game.board.pandemic.node[city]['cubes'] * probability
+                    if game.board.pandemic.node[city]['cubes'] == 2:
+                        cubeSumList[region] += 5
+                        cubeSumList[region] += 5 * probability
+                    elif game.board.pandemic.node[city]['cubes'] == 3:
+                        cubeSumList[region] += 10
+                        cubeSumList[region] += 10 * probability
+                    else:
+                        cubeSumList[region] += game.board.pandemic.node[city]['cubes']
+                        cubeSumList[region] += game.board.pandemic.node[city]['cubes'] * probability
 
         heuristic = sum(cubeSumList)
 
