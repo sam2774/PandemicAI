@@ -19,6 +19,7 @@ class DiseaseDeck():
     def draw(self):
         card = self.deck.pop()
         self.graveyard.append(card)
+        print(card)
         return card
 
     def appendGraveyard(self):
@@ -33,4 +34,5 @@ class DiseaseDeck():
         card = self.deck[0]
         self.deck.__delitem__(0)
         self.graveyard.append(card)
+        print (card)
         return card

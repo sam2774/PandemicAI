@@ -1,4 +1,5 @@
 import networkx as nx
+import sys
 
 class Pandemic():
     def __init__(self):
